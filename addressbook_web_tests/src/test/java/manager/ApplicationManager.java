@@ -1,21 +1,16 @@
-import org.junit.jupiter.api.BeforeEach;
+package manager;
+
+import model.GroupData;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
-public class TestBase {
+public class ApplicationManager {
     protected static WebDriver driver;
 
-    protected static void removeGroup() {
-        driver.findElement(By.name("selected[]")).click();
-        driver.findElement(By.name("delete")).click();
-        driver.findElement(By.linkText("group page")).click();
-    }
-
-    @BeforeEach
-    public void setUp() {
+    public void init() {
         if (driver == null) {
             driver = new FirefoxDriver();
             Runtime.getRuntime().addShutdownHook(new Thread(driver::quit));
@@ -39,26 +34,32 @@ public class TestBase {
         }
     }
 
-    protected void createGroup(String group1) {
+    public void createGroup(GroupData group) {
         driver.findElement(By.name("new")).click();
         driver.findElement(By.name("group_name")).click();
-        driver.findElement(By.name("group_name")).sendKeys(group1);
+        driver.findElement(By.name("group_name")).sendKeys(group.name());
         driver.findElement(By.name("group_header")).click();
-        driver.findElement(By.name("group_header")).sendKeys(group1);
+        driver.findElement(By.name("group_header")).sendKeys(group.header());
         driver.findElement(By.name("group_footer")).click();
-        driver.findElement(By.name("group_footer")).sendKeys(group1);
+        driver.findElement(By.name("group_footer")).sendKeys(group.footer());
         driver.findElement(By.cssSelector("form:nth-child(2)")).click();
         driver.findElement(By.name("submit")).click();
         driver.findElement(By.linkText("group page")).click();
     }
 
-    protected void openGroupsPage() {
+    public void openGroupsPage() {
         if (!isElementPresent(By.name("new"))) {
             driver.findElement(By.linkText("groups")).click();
         }
     }
 
-    protected boolean isGroupPresent() {
+    public boolean isGroupPresent() {
         return isElementPresent(By.name("selected[]"));
+    }
+
+    public void removeGroup() {
+        driver.findElement(By.name("selected[]")).click();
+        driver.findElement(By.name("delete")).click();
+        driver.findElement(By.linkText("group page")).click();
     }
 }
