@@ -24,7 +24,6 @@ public class GroupHelper extends HelperBase {
         openGroupsPage();
         initGroupCreation();
         fillGroupForm(group);
-        click(By.cssSelector("form:nth-child(2)"));
         submitGroupCreation();
         returnToGroupsPage();
     }
