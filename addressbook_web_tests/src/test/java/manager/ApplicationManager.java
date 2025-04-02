@@ -4,7 +4,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.AddHasCasting;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
@@ -12,7 +11,7 @@ public class ApplicationManager {
     protected WebDriver driver;
     private LoginHelper session;
     private GroupHelper groups;
-    private AddHelper add;
+    private AddressHelper address;
 
     public void init(String browser) {
         if (driver == null) {
@@ -44,11 +43,11 @@ public class ApplicationManager {
         return groups;
     }
 
-    public AddHelper add() {
-        if (add == null) {
-            add = new AddHelper(this);
+    public AddressHelper address() {
+        if (address == null) {
+            address = new AddressHelper(this);
         }
-        return add;
+        return address;
     }
 
     protected boolean isElementPresent(By locator) {
