@@ -14,7 +14,7 @@ public record AddressData(String id, String first_name, String last_name, String
         return new AddressData(this.id, first_name,this.last_name,this.mobile);
     }
 
-    public AddressData withLast_name(String last_name) {
+    public AddressData withLastName(String last_name) {
         return new AddressData(this.id, this.first_name, last_name, this.mobile);
     }
 

@@ -24,6 +24,23 @@ public class AddressHelper extends HelperBase {
         removeSelectedAddress();
     }
 
+    public void modifyAddress(AddressData address, AddressData modifiedAddress) {
+        openHomePage();
+        selectAddress(address);
+        initAddressModification();
+        fillAddressForm(modifiedAddress);
+        submitAddressModification();
+        openHomePage();
+    }
+
+    private void initAddressModification() {
+        click(By.cssSelector("[title=\"Edit\"]"));
+    }
+
+    private void submitAddressModification() {
+        click(By.name("update"));
+    }
+
     public void openAddressPage() {
         if (!manager.isElementPresent(By.name("new"))) {
             click(By.linkText("add new"));
@@ -73,7 +90,7 @@ public class AddressHelper extends HelperBase {
             var id_td = tr.findElement(By.cssSelector("td.center"));
             var checkbox = id_td.findElement(By.name("selected[]"));
             var id = checkbox.getAttribute("value");
-            addresses.add(new AddressData().withId(id).withFirstName(first_name).withLast_name(last_name));
+            addresses.add(new AddressData().withId(id).withFirstName(first_name).withLastName(last_name));
         }
         return addresses;
     }
