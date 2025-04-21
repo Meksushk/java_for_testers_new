@@ -27,14 +27,9 @@ public class AddressHelper extends HelperBase {
     public void modifyAddress(AddressData address, AddressData modifiedAddress) {
         openHomePage();
         selectAddress(address);
-        initAddressModification();
         fillAddressForm(modifiedAddress);
         submitAddressModification();
         openHomePage();
-    }
-
-    private void initAddressModification() {
-        click(By.cssSelector("[title=\"Edit\"]"));
     }
 
     private void submitAddressModification() {
@@ -62,7 +57,7 @@ public class AddressHelper extends HelperBase {
     }
 
     private void selectAddress(AddressData address) {
-        click(By.cssSelector(String.format("input[value='%s']", address.id())));
+        click(By.xpath(String.format("//a[contains(@href,'edit') and contains(@href,'%s')]", address.id())));
     }
 
     private void removeSelectedAddress() {
