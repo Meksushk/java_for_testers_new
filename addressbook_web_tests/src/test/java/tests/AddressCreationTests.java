@@ -16,12 +16,12 @@ public class AddressCreationTests extends TestBase {
         for (var first_name : List.of("","user")){
             for (var last_name : List.of("","user")){
                 for (var mobile : List.of("","123")){
-                    result.add(new AddressData("", first_name, last_name, mobile));
+                    result.add(new AddressData("", first_name, last_name,"src/test/resources/images/png-ikonka.png", mobile));
                 }
             }
         }
         for (int i = 0; i < 5; i++){
-            result.add(new AddressData("", randomString(i * 10), randomString(i * 10), randomString(i * 10)));
+            result.add(new AddressData("", randomString(i * 10), randomString(i * 10),randomFile("src/test/resources/images"), randomString(i * 10)));
         }
         return result;
     }
@@ -37,13 +37,13 @@ public class AddressCreationTests extends TestBase {
         };
         newAddresses.sort(compareById);
         var expectedList = new ArrayList<>(oldAddresses);
-        expectedList.add(address.withId(newAddresses.get(newAddresses.size() - 1).id()).withMobile(""));
+        expectedList.add(address.withId(newAddresses.get(newAddresses.size() - 1).id()).withPhoto("").withMobile(""));
         expectedList.sort(compareById);
         Assertions.assertEquals(newAddresses, expectedList);
     }
 
     public static List<AddressData> negativeAddressProvider() {
-        var result = new ArrayList<AddressData>((List.of(new AddressData("", "user'","",""))));
+        var result = new ArrayList<AddressData>((List.of(new AddressData("", "user'","","src/test/resources/images/png-ikonka.png",""))));
         return result;
     }
 

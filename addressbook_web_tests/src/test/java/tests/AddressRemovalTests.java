@@ -13,7 +13,7 @@ public class AddressRemovalTests extends TestBase {
     @Test
     public void canRemoveAdd() {
         if (!app.address().isAddressPresent()){
-            app.address().createAddress(new AddressData("", "user", "user", "user"));
+            app.address().createAddress(new AddressData("", "user", "user", "src/test/resources/images/png-ikonka.png", "user"));
         }
         var oldAddresses = app.address().getList();
         var rnd = new Random();

@@ -45,6 +45,7 @@ public class AddressHelper extends HelperBase {
     private void fillAddressForm(AddressData address) {
         type(By.name("firstname"), address.first_name());
         type(By.name("lastname"), address.last_name());
+        attach(By.name("photo"),address.photo());
         type(By.name("mobile"), address.mobile());
     }
 
