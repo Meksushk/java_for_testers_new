@@ -1,5 +1,6 @@
 package tests;
 
+import common.CommonFunctions;
 import model.AddressData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -21,7 +22,7 @@ public class AddressCreationTests extends TestBase {
             }
         }
         for (int i = 0; i < 5; i++){
-            result.add(new AddressData("", randomString(i * 10), randomString(i * 10),randomFile("src/test/resources/images"), randomString(i * 10)));
+            result.add(new AddressData("", CommonFunctions.randomString(i * 10), CommonFunctions.randomString(i * 10),randomFile("src/test/resources/images"), CommonFunctions.randomString(i * 10)));
         }
         return result;
     }
