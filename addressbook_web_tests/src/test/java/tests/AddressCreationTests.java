@@ -1,29 +1,38 @@
 package tests;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import common.CommonFunctions;
 import model.AddressData;
+import model.GroupData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
 public class AddressCreationTests extends TestBase {
 
-    public static List<AddressData> addressProvider() {
+    public static List<AddressData> addressProvider() throws IOException {
         var result = new ArrayList<AddressData>();
-        for (var first_name : List.of("","user")){
-            for (var last_name : List.of("","user")){
-                for (var mobile : List.of("","123")){
-                    result.add(new AddressData("", first_name, last_name,"src/test/resources/images/png-ikonka.png", mobile));
-                }
-            }
-        }
-        for (int i = 0; i < 5; i++){
-            result.add(new AddressData("", CommonFunctions.randomString(i * 10), CommonFunctions.randomString(i * 10),randomFile("src/test/resources/images"), CommonFunctions.randomString(i * 10)));
-        }
+        //for (var first_name : List.of("","user")){
+        //    for (var last_name : List.of("","user")){
+        //        for (var mobile : List.of("","123")){
+        //            result.add(new AddressData("", first_name, last_name,"src/test/resources/images/png-ikonka.png", mobile));
+        //        }
+        //    }
+        //}
+
+        //for (int i = 0; i < 5; i++){
+         //   result.add(new AddressData("", CommonFunctions.randomString(i * 10), CommonFunctions.randomString(i * 10),randomFile("src/test/resources/images"), CommonFunctions.randomString(i * 10)));
+        //}
+        var mapper = new XmlMapper();
+        var value = mapper.readValue(new File("addresses.xml"),  new TypeReference<List<AddressData>>(){});
+        result.addAll(value);
         return result;
     }
 

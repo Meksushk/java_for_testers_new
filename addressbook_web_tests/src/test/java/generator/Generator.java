@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
 import common.CommonFunctions;
+import model.AddressData;
 import model.GroupData;
 
 import java.io.File;
@@ -64,7 +65,15 @@ public class Generator {
     }
 
     private Object generateAddress() {
-        return null;
+        var result = new ArrayList<AddressData>();
+        for (int i = 0; i < count; i++){
+            result.add(new AddressData()
+                    .withFirstName(CommonFunctions.randomString(i * 10))
+                    .withLastName(CommonFunctions.randomString(i * 10))
+                    .withPhoto(CommonFunctions.randomFile("src/test/resources/images"))
+                    .withMobile(CommonFunctions.randomString(i * 10)));
+        }
+        return result;
     }
 
     private void save(Object data) throws IOException {
