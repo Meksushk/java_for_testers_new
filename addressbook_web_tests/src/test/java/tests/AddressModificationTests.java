@@ -12,17 +12,17 @@ public class AddressModificationTests extends TestBase {
 
     @Test
     void canModifyAddress() {
-        if (app.address().getCount() == 0){
-            app.address().createAddress(new AddressData("", "user1", "user1", "src/test/resources/images/png-ikonka.png", "user1"));
+        if (app.hbm().getAddressCount() == 0){
+            app.hbm().createAddress(new AddressData("", "user1", "user1", "123"));
         }
-        var oldAddresses = app.address().getList();
+        var oldAddresses = app.hbm().getAddressList();
         var rnd = new Random();
         var index = rnd.nextInt(oldAddresses.size());
-        var testData = new AddressData().withLastName("new name").withPhoto("src/test/resources/images/png-ikonka.png");
+        var testData = new AddressData().withLastName("new name");
         app.address().modifyAddress(oldAddresses.get(index), testData);
-        var newAddresses = app.address().getList();
+        var newAddresses = app.hbm().getAddressList();
         var expectedList = new ArrayList<>(oldAddresses);
-        expectedList.set(index, testData.withId(oldAddresses.get(index).id()).withPhoto(""));
+        expectedList.set(index, testData.withId(oldAddresses.get(index).id()));
         Comparator<AddressData> compareById = (o1, o2) -> {
             return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
         };

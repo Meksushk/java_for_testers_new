@@ -34,8 +34,20 @@ public class HibernateHelper extends HelperBase {
         return result;
     }
 
+    static List<AddressData> convertAddressList(List<AddressRecord> records){
+        List<AddressData> result = new ArrayList<>();
+        for (var record : records) {
+            result.add(convert(record));
+        }
+        return result;
+    }
+
     private static GroupData convert(GroupRecord record) {
         return new GroupData("" + record.id, record.name, record.header, record.footer);
+    }
+
+    private static AddressData convert(AddressRecord record) {
+        return new AddressData("" + record.id, record.firstname, record.lastname, record.mobile);
     }
 
     private static GroupRecord convert(GroupData data) {
@@ -46,15 +58,35 @@ public class HibernateHelper extends HelperBase {
         return new GroupRecord(Integer.parseInt(id), data.name(), data.header(), data.footer());
     }
 
+    private static AddressRecord convert(AddressData data) {
+        var id = data.id();
+        if ("".equals(id)) {
+            id = "0";
+        }
+        return new AddressRecord(Integer.parseInt(id), data.firstname(), data.lastname(), data.mobile());
+    }
+
     public List<GroupData> getGroupList() {
         return convertList(sessionFactory.fromSession(session -> {
             return session.createQuery("from GroupRecord", GroupRecord.class).list();
         }));
     }
 
+    public List<AddressData> getAddressList() {
+        return convertAddressList(sessionFactory.fromSession(session -> {
+            return session.createQuery("from AddressRecord", AddressRecord.class).list();
+        }));
+    }
+
     public long getGroupCount() {
         return sessionFactory.fromSession(session -> {
             return session.createQuery("select count (*) from GroupRecord", Long.class).getSingleResult();
+        });
+    }
+
+    public long getAddressCount() {
+        return sessionFactory.fromSession(session -> {
+            return session.createQuery("select count (*) from AddressRecord", Long.class).getSingleResult();
         });
     }
 
@@ -66,27 +98,12 @@ public class HibernateHelper extends HelperBase {
         });
     }
 
-    static List<AddressData> convertAddressList(List<AddressRecord> records){
-        List<AddressData> result = new ArrayList<>();
-        for (var record : records) {
-            result.add(convert(record));
-        }
-        return result;
-    }
-
-    private static AddressData convert(AddressRecord record) {
-        return new AddressData().withId("" + record.id)
-                .withFirstName(record.firstname)
-                .withLastName(record.lastname)
-                .withMobile(record.mobile);
-    }
-
-    private static AddressRecord convert(AddressData data) {
-        var id = data.id();
-        if ("".equals(id)) {
-            id = "0";
-        }
-        return new AddressRecord(Integer.parseInt(id), data.first_name(), data.last_name(), data.mobile());
+    public void createAddress(AddressData addressData) {
+        sessionFactory.inSession(session -> {
+            session.getTransaction().begin();
+            session.persist(convert(addressData));
+            session.getTransaction().commit();
+        });
     }
 
     public List<AddressData> getAddressesInGroup(GroupData group) {

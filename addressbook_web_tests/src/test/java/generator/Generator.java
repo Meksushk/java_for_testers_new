@@ -70,7 +70,7 @@ public class Generator {
             result.add(new AddressData()
                     .withFirstName(CommonFunctions.randomString(i * 10))
                     .withLastName(CommonFunctions.randomString(i * 10))
-                    .withPhoto(CommonFunctions.randomFile("src/test/resources/images"))
+                    //.withPhoto(CommonFunctions.randomFile("src/test/resources/images"))
                     .withMobile(CommonFunctions.randomString(i * 10)));
         }
         return result;

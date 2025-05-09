@@ -57,9 +57,9 @@ public class AddressHelper extends HelperBase {
     }
 
     private void fillAddressForm(AddressData address) {
-        type(By.name("firstname"), address.first_name());
-        type(By.name("lastname"), address.last_name());
-        attach(By.name("photo"),address.photo());
+        type(By.name("firstname"), address.firstname());
+        type(By.name("lastname"), address.lastname());
+        //attach(By.name("photo"),address.photo());
         type(By.name("mobile"), address.mobile());
     }
 
@@ -72,7 +72,7 @@ public class AddressHelper extends HelperBase {
     }
 
     private void selectAddress(AddressData address) {
-        click(By.xpath(String.format("//a[contains(@href,'edit') and endsWith(@href, '%s')]", address.id())));
+        click(By.xpath(String.format("//a[contains(@href,'edit') and substring(@href, string-length(@href) - string-length('%s') + 1)='%s']", address.id(),address.id())));
     }
 
     private void removeSelectedAddress() {
