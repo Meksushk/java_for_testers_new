@@ -58,7 +58,7 @@ public class AddressHelper extends HelperBase {
     }
 
     private void selectAddress(AddressData address) {
-        click(By.xpath(String.format("//a[contains(@href,'edit') and contains(@href, '%s')]", address.id())));
+        click(By.xpath(String.format("//a[contains(@href,'edit') and endsWith(@href, '%s')]", address.id())));
     }
 
     private void removeSelectedAddress() {
