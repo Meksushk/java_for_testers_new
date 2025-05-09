@@ -1,7 +1,9 @@
 package manager;
 
 import model.AddressData;
+import model.GroupData;
 import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.Select;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +19,18 @@ public class AddressHelper extends HelperBase {
         fillAddressForm(address);
         submitAddressCreation();
         openHomePage();
+    }
+
+    public void createAddress(AddressData address, GroupData group) {
+        openAddressPage();
+        fillAddressForm(address);
+        selectGroup(group);
+        submitAddressCreation();
+        openHomePage();
+    }
+
+    private void selectGroup(GroupData group) {
+        new Select(manager.driver.findElement(By.name("new_group"))).selectByValue(group.id());
     }
 
     public void removeAddress(AddressData address) {

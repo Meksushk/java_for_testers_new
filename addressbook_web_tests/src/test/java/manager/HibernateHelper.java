@@ -1,6 +1,8 @@
 package manager;
 
+import manager.hbm.AddressRecord;
 import manager.hbm.GroupRecord;
+import model.AddressData;
 import model.GroupData;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AvailableSettings;
@@ -16,8 +18,9 @@ public class HibernateHelper extends HelperBase {
     public HibernateHelper(ApplicationManager manager) {
         super(manager);
         sessionFactory = new Configuration()
+                .addAnnotatedClass(AddressRecord.class)
                 .addAnnotatedClass(GroupRecord.class)
-                .setProperty(AvailableSettings.URL, "jdbc:mysql://localhost/addressbook")
+                .setProperty(AvailableSettings.URL, "jdbc:mysql://localhost/addressbook?zeroDateTimeBehavior=convertToNull")
                 .setProperty(AvailableSettings.USER, "root")
                 .setProperty(AvailableSettings.PASS, "")
                 .buildSessionFactory();
@@ -60,6 +63,35 @@ public class HibernateHelper extends HelperBase {
             session.getTransaction().begin();
             session.persist(convert(groupData));
             session.getTransaction().commit();
+        });
+    }
+
+    static List<AddressData> convertAddressList(List<AddressRecord> records){
+        List<AddressData> result = new ArrayList<>();
+        for (var record : records) {
+            result.add(convert(record));
+        }
+        return result;
+    }
+
+    private static AddressData convert(AddressRecord record) {
+        return new AddressData().withId("" + record.id)
+                .withFirstName(record.firstname)
+                .withLastName(record.lastname)
+                .withMobile(record.mobile);
+    }
+
+    private static AddressRecord convert(AddressData data) {
+        var id = data.id();
+        if ("".equals(id)) {
+            id = "0";
+        }
+        return new AddressRecord(Integer.parseInt(id), data.first_name(), data.last_name(), data.mobile());
+    }
+
+    public List<AddressData> getAddressesInGroup(GroupData group) {
+        return sessionFactory.fromSession(session -> {
+            return convertAddressList(session.get(GroupRecord.class, group.id()).addresses);
         });
     }
 }

@@ -2,11 +2,11 @@ package tests;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import common.CommonFunctions;
 import model.AddressData;
 import model.GroupData;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+
+import static common.CommonFunctions.randomFile;
 
 public class AddressCreationTests extends TestBase {
 
@@ -65,5 +67,22 @@ public class AddressCreationTests extends TestBase {
         app.address().createAddress(address);
         var newAddresses = app.address().getList();
         Assertions.assertEquals(newAddresses, oldAddresses);
+    }
+
+    @Test
+    void CanCreateAddressInGroups() {
+        var address = new AddressData()
+                .withFirstName(CommonFunctions.randomString(10))
+                .withLastName(CommonFunctions.randomString(10))
+                .withPhoto(randomFile("src/test/resources/images"));
+        if (app.hbm().getGroupCount() == 0){
+            app.hbm().createGroup(new GroupData("", "group1", "group1", "group1"));
+        }
+        var group = app.hbm().getGroupList().get(0);
+
+        var oldRelated = app.hbm().getAddressesInGroup(group);
+        app.address().createAddress(address, group);
+        var newRelated = app.hbm().getAddressesInGroup(group);
+        Assertions.assertEquals(oldRelated.size() + 1, newRelated.size());
     }
 }
