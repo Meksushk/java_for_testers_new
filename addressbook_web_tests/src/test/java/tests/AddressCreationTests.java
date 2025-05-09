@@ -1,6 +1,7 @@
 package tests;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import common.CommonFunctions;
 import model.AddressData;
@@ -30,8 +31,8 @@ public class AddressCreationTests extends TestBase {
         //for (int i = 0; i < 5; i++){
          //   result.add(new AddressData("", CommonFunctions.randomString(i * 10), CommonFunctions.randomString(i * 10),randomFile("src/test/resources/images"), CommonFunctions.randomString(i * 10)));
         //}
-        var mapper = new XmlMapper();
-        var value = mapper.readValue(new File("addresses.xml"),  new TypeReference<List<AddressData>>(){});
+        var mapper = new ObjectMapper();
+        var value = mapper.readValue(new File("addresses.json"),  new TypeReference<List<AddressData>>(){});
         result.addAll(value);
         return result;
     }
