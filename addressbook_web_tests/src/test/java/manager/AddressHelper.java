@@ -29,6 +29,42 @@ public class AddressHelper extends HelperBase {
         openHomePage();
     }
 
+    public void addInGroup(AddressData address, GroupData group) {
+        openHomePage();
+        selectContact(address);
+        selectToGroup(group);
+        submitAddTo();
+        openHomePage();
+    }
+
+    public void delInGroup(AddressData address, GroupData group) {
+        openHomePage();
+        selectFromGroup(group);
+        selectContact(address);
+        removeFromGroup();
+        openHomePage();
+    }
+
+    private void removeFromGroup() {
+        click(By.name("remove"));
+    }
+
+    private void selectFromGroup(GroupData group) {
+        new Select(manager.driver.findElement(By.name("group"))).selectByValue(group.id());
+    }
+
+    private void submitAddTo() {
+        click(By.name("add"));
+    }
+
+    private void selectContact(AddressData address) {
+        click(By.xpath(String.format("//input[@name=\'selected[]\' and @value=\'%s\']",address.id())));
+    }
+
+    private void selectToGroup(GroupData group) {
+        new Select(manager.driver.findElement(By.name("to_group"))).selectByValue(group.id());
+    }
+
     private void selectGroup(GroupData group) {
         new Select(manager.driver.findElement(By.name("new_group"))).selectByValue(group.id());
     }
@@ -72,7 +108,7 @@ public class AddressHelper extends HelperBase {
     }
 
     private void selectAddress(AddressData address) {
-        click(By.xpath(String.format("//a[contains(@href,'edit') and substring(@href, string-length(@href) - string-length('%s') + 1)='%s']", address.id(),address.id())));
+        click(By.xpath(String.format("//a[contains(@href,'edit') and contains(@href,\'%s\')]", address.id())));
     }
 
     private void removeSelectedAddress() {

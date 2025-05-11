@@ -1,5 +1,6 @@
 package manager;
 
+import manager.hbm.AddressInGroups;
 import manager.hbm.AddressRecord;
 import manager.hbm.GroupRecord;
 import model.AddressData;
@@ -8,6 +9,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
 
+import java.sql.DriverManager;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +22,7 @@ public class HibernateHelper extends HelperBase {
         sessionFactory = new Configuration()
                 .addAnnotatedClass(AddressRecord.class)
                 .addAnnotatedClass(GroupRecord.class)
+                .addAnnotatedClass(AddressInGroups.class)
                 .setProperty(AvailableSettings.URL, "jdbc:mysql://localhost/addressbook?zeroDateTimeBehavior=convertToNull")
                 .setProperty(AvailableSettings.USER, "root")
                 .setProperty(AvailableSettings.PASS, "")
@@ -87,6 +90,12 @@ public class HibernateHelper extends HelperBase {
     public long getAddressCount() {
         return sessionFactory.fromSession(session -> {
             return session.createQuery("select count (*) from AddressRecord", Long.class).getSingleResult();
+        });
+    }
+
+    public long getAddressInGroupsCount() {
+        return sessionFactory.fromSession(session -> {
+            return session.createQuery("select count (*) from AddressInGroups", Long.class).getSingleResult();
         });
     }
 
