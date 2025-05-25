@@ -9,7 +9,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
 
-import java.sql.DriverManager;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -96,6 +95,16 @@ public class HibernateHelper extends HelperBase {
     public long getAddressInGroupsCount() {
         return sessionFactory.fromSession(session -> {
             return session.createQuery("select count (*) from AddressInGroups", Long.class).getSingleResult();
+        });
+    }
+    
+    public boolean isAddressInGroup(int addressId, int groupId) {
+        return sessionFactory.fromSession(session -> {
+            var count = session.createQuery("select count (*) from AddressInGroups aig where aig.id = :addressId and aig.group_id = :groupId", Long.class)
+                    .setParameter("addressId", addressId)
+                    .setParameter("groupId", groupId)
+                    .getSingleResult();
+            return count > 0;
         });
     }
 
