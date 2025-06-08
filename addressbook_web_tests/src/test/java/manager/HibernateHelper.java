@@ -12,6 +12,8 @@ import org.hibernate.cfg.Configuration;
 import java.util.ArrayList;
 import java.util.List;
 
+import static tests.TestBase.app;
+
 public class HibernateHelper extends HelperBase {
 
     private SessionFactory sessionFactory;
@@ -97,7 +99,7 @@ public class HibernateHelper extends HelperBase {
             return session.createQuery("select count (*) from AddressInGroups", Long.class).getSingleResult();
         });
     }
-    
+
     public boolean isAddressInGroup(int addressId, int groupId) {
         return sessionFactory.fromSession(session -> {
             var count = session.createQuery("select count (*) from AddressInGroups aig where aig.id = :addressId and aig.group_id = :groupId", Long.class)
@@ -128,5 +130,45 @@ public class HibernateHelper extends HelperBase {
         return sessionFactory.fromSession(session -> {
             return convertAddressList(session.get(GroupRecord.class, group.id()).addresses);
         });
+    }
+
+
+    public List<AddressInGroups> findAddressGroupPairToAdd(List<AddressData> addresses, List<GroupData> groups) {
+        List<AddressInGroups> pair = new ArrayList<>();
+        int counter = 0;
+        for (AddressData address : addresses) {
+            int indexA = Integer.parseInt(address.id());
+            if (counter == addresses.size() - 1) {
+                app.hbm().createGroup(new GroupData("", "new_group", "", ""));
+                groups = new ArrayList<>();
+            }
+            for (GroupData group : groups) {
+                int indexG = Integer.parseInt(group.id());
+                if (!app.hbm().isAddressInGroup(indexA, indexG)) {
+                    pair.add(new AddressInGroups(indexA,indexG));
+                    return pair;
+                }
+            }
+            counter ++;
+        }
+        return pair;
+    }
+
+    public AddressData findAddressById(String id, List<AddressData> addresses) {
+        for (AddressData address : addresses) {
+            if (address.id().equals(id)) {
+                return address;
+            }
+        }
+        return null;
+    }
+
+    public GroupData findGroupById(String id, List<GroupData> groups) {
+        for (GroupData group : groups) {
+            if (group.id().equals(id)) {
+                return group;
+            }
+        }
+        return null;
     }
 }
