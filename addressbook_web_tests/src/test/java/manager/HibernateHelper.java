@@ -1,5 +1,6 @@
 package manager;
 
+import common.CommonFunctions;
 import manager.hbm.AddressInGroups;
 import manager.hbm.AddressRecord;
 import manager.hbm.GroupRecord;
@@ -139,7 +140,7 @@ public class HibernateHelper extends HelperBase {
         for (AddressData address : addresses) {
             int indexA = Integer.parseInt(address.id());
             if (counter == addresses.size() - 1) {
-                app.hbm().createGroup(new GroupData("", "new_group", "", ""));
+                app.hbm().createGroup(new GroupData("", "" + CommonFunctions.randomString(10), "", ""));
                 groups = new ArrayList<>();
             }
             for (GroupData group : groups) {

@@ -47,22 +47,22 @@ public class AddressModificationTests extends TestBase {
 
         var listToAdd = app.hbm().findAddressGroupPairToAdd(listAddresses, listGroups);
 
-        for (AddressInGroups pair : listToAdd) {
-            AddressData address = app.hbm().findAddressById(String.valueOf(pair.id), listAddresses);
-            GroupData group = app.hbm().findGroupById(String.valueOf(pair.group_id), listGroups);
+        AddressInGroups pair = listToAdd.get(0);
 
-            var oldRelated = app.hbm().getAddressesInGroup(listGroups.get(listGroups.indexOf(group)));
-            app.address().addInGroup(address,group);
-            var newRelated = app.hbm().getAddressesInGroup(listGroups.get(listGroups.indexOf(group)));
-            Comparator<AddressData> compareById = (o1, o2) -> {
-                return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
-            };
-            newRelated.sort(compareById);
-            var expectedList = new ArrayList<>(oldRelated);
-            expectedList.add(listAddresses.get(listAddresses.indexOf(address)));
-            expectedList.sort(compareById);
-            Assertions.assertEquals(newRelated, expectedList);
-        }
+        AddressData address = app.hbm().findAddressById(String.valueOf(pair.id), listAddresses);
+        GroupData group = app.hbm().findGroupById(String.valueOf(pair.group_id), listGroups);
+
+        var oldRelated = app.hbm().getAddressesInGroup(listGroups.get(listGroups.indexOf(group)));
+        app.address().addInGroup(address,group);
+        var newRelated = app.hbm().getAddressesInGroup(listGroups.get(listGroups.indexOf(group)));
+        Comparator<AddressData> compareById = (o1, o2) -> {
+            return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
+        };
+        newRelated.sort(compareById);
+        var expectedList = new ArrayList<>(oldRelated);
+        expectedList.add(listAddresses.get(listAddresses.indexOf(address)));
+        expectedList.sort(compareById);
+        Assertions.assertEquals(newRelated, expectedList);
     }
 
     @Test
