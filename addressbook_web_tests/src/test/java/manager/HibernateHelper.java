@@ -11,6 +11,7 @@ import org.hibernate.cfg.Configuration;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static tests.TestBase.app;
 
@@ -31,19 +32,11 @@ public class HibernateHelper extends HelperBase {
     }
 
     static List<GroupData> convertList(List<GroupRecord> records){
-        List<GroupData> result = new ArrayList<>();
-        for (var record : records) {
-            result.add(convert(record));
-        }
-        return result;
+        return records.stream().map(HibernateHelper::convert).collect(Collectors.toList());
     }
 
     static List<AddressData> convertAddressList(List<AddressRecord> records){
-        List<AddressData> result = new ArrayList<>();
-        for (var record : records) {
-            result.add(convert(record));
-        }
-        return result;
+        return records.stream().map(HibernateHelper::convert).collect(Collectors.toList());
     }
 
     private static GroupData convert(GroupRecord record) {
