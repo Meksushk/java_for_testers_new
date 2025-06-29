@@ -1,6 +1,5 @@
 package manager;
 
-import common.CommonFunctions;
 import manager.hbm.AddressInGroups;
 import manager.hbm.AddressRecord;
 import manager.hbm.GroupRecord;
@@ -136,13 +135,8 @@ public class HibernateHelper extends HelperBase {
 
     public List<AddressInGroups> findAddressGroupPairToAdd(List<AddressData> addresses, List<GroupData> groups) {
         List<AddressInGroups> pair = new ArrayList<>();
-        int counter = 0;
         for (AddressData address : addresses) {
             int indexA = Integer.parseInt(address.id());
-            if (counter == addresses.size() - 1) {
-                app.hbm().createGroup(new GroupData("", "" + CommonFunctions.randomString(10), "", ""));
-                groups = new ArrayList<>();
-            }
             for (GroupData group : groups) {
                 int indexG = Integer.parseInt(group.id());
                 if (!app.hbm().isAddressInGroup(indexA, indexG)) {
@@ -150,7 +144,6 @@ public class HibernateHelper extends HelperBase {
                     return pair;
                 }
             }
-            counter ++;
         }
         return pair;
     }

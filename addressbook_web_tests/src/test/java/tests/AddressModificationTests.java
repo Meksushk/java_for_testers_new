@@ -1,5 +1,6 @@
 package tests;
 
+import common.CommonFunctions;
 import manager.hbm.AddressInGroups;
 import model.AddressData;
 import model.GroupData;
@@ -47,20 +48,26 @@ public class AddressModificationTests extends TestBase {
 
         var listToAdd = app.hbm().findAddressGroupPairToAdd(listAddresses, listGroups);
 
+        if (listToAdd.isEmpty()) {
+            app.hbm().createGroup(new GroupData("", "" + CommonFunctions.randomString(10), "", ""));
+            listGroups = app.hbm().getGroupList();
+            listToAdd = app.hbm().findAddressGroupPairToAdd(listAddresses, listGroups);
+        }
+
         AddressInGroups pair = listToAdd.get(0);
 
         AddressData address = app.hbm().findAddressById(String.valueOf(pair.id), listAddresses);
         GroupData group = app.hbm().findGroupById(String.valueOf(pair.group_id), listGroups);
 
-        var oldRelated = app.hbm().getAddressesInGroup(listGroups.get(listGroups.indexOf(group)));
+        var oldRelated = app.hbm().getAddressesInGroup(group);
         app.address().addInGroup(address,group);
-        var newRelated = app.hbm().getAddressesInGroup(listGroups.get(listGroups.indexOf(group)));
+        var newRelated = app.hbm().getAddressesInGroup(group);
         Comparator<AddressData> compareById = (o1, o2) -> {
             return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
         };
         newRelated.sort(compareById);
         var expectedList = new ArrayList<>(oldRelated);
-        expectedList.add(listAddresses.get(listAddresses.indexOf(address)));
+        expectedList.add(address);
         expectedList.sort(compareById);
         Assertions.assertEquals(newRelated, expectedList);
     }
@@ -87,6 +94,12 @@ public class AddressModificationTests extends TestBase {
         }
 
         var oldRelated = app.hbm().getAddressesInGroup(listGroups.get(indexG));
+
+        if(!oldRelated.contains(indexA)){
+           app.address().addInGroup(listAddresses.get(indexA),listGroups.get(indexG));
+           oldRelated = app.hbm().getAddressesInGroup(listGroups.get(indexG));
+        }
+
         app.address().delInGroup(listAddresses.get(indexA),listGroups.get(indexG));
 
         var newRelated = app.hbm().getAddressesInGroup(listGroups.get(indexG));
