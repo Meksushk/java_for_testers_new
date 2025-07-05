@@ -15,11 +15,12 @@ public class ContactInfoTests extends TestBase {
             app.hbm().createAddress(new AddressData("", "user1", "user1", "123", "", "", ""));
         }
         var contacts = app.hbm().getAddressList();
-        var contact = contacts.get(0);
-        var phones = app.address().getPhones(contact);
-        var expected = Stream.of(contact.home(), contact.mobile(), contact.work(), contact.secondary())
-                .filter(s -> s != null && ! "".equals(s))
-                .collect(Collectors.joining("\n"));
+        var expected = contacts.stream().collect(Collectors.toMap(AddressData::id, contact ->
+            Stream.of(contact.home(), contact.mobile(), contact.work(), contact.secondary())
+                    .filter(s -> s != null && ! "".equals(s))
+                    .collect(Collectors.joining("\n"))
+        ));
+        var phones = app.address().getPhones();
         Assertions.assertEquals(expected, phones);
     }
 }
