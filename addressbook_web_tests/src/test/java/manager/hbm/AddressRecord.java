@@ -26,11 +26,11 @@ public class AddressRecord {
 
     public String address = "address";
 
-    public String home = "123";
+    public String home;
 
     public String mobile;
 
-    public String work = "321";
+    public String work;
 
     public String fax = "231";
 
@@ -41,6 +41,8 @@ public class AddressRecord {
     public String email3 = "email3@mail.ru";
 
     public String homepage = "homepage";
+
+    public String phone2;
 
     public AddressRecord(){
     }

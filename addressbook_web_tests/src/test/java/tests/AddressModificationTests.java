@@ -16,7 +16,7 @@ public class AddressModificationTests extends TestBase {
     @Test
     void canModifyAddress() {
         if (app.hbm().getAddressCount() == 0){
-            app.hbm().createAddress(new AddressData("", "user1", "user1", "123"));
+            app.hbm().createAddress(new AddressData("", "user1", "user1", "123", "", "", ""));
         }
         var oldAddresses = app.hbm().getAddressList();
         var rnd = new Random();
@@ -37,7 +37,7 @@ public class AddressModificationTests extends TestBase {
     @Test
     public void AddAddressInGroups() {
         if (app.hbm().getAddressCount() == 0) {
-            app.hbm().createAddress(new AddressData("", "user1", "user1", "123"));
+            app.hbm().createAddress(new AddressData("", "user1", "user1", "123", "", "", ""));
         }
         if (app.hbm().getGroupCount() == 0) {
             app.hbm().createGroup(new GroupData("", "group1", "group1", "group1"));
@@ -75,7 +75,7 @@ public class AddressModificationTests extends TestBase {
     @Test
     public void DelAddressInGroups() {
         if (app.hbm().getAddressCount() == 0){
-            app.hbm().createAddress(new AddressData("", "user1", "user1", "123"));
+            app.hbm().createAddress(new AddressData("", "user1", "user1", "123", "", "", ""));
         }
         if (app.hbm().getGroupCount() == 0){
             app.hbm().createGroup(new GroupData("", "group1", "group1", "group1"));
