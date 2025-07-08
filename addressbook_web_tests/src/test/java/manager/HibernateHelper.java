@@ -44,7 +44,7 @@ public class HibernateHelper extends HelperBase {
     }
 
     private static AddressData convert(AddressRecord record) {
-        return new AddressData("" + record.id, record.firstname, record.lastname, record.mobile, record.home, record.work, record.phone2);
+        return new AddressData("" + record.id, record.firstname, record.lastname, record.address, record.mobile, record.home, record.work, record.phone2, record.email, record.email2, record.email3);
     }
 
     private static GroupRecord convert(GroupData data) {

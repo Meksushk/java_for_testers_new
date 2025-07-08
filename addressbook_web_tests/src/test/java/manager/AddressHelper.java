@@ -159,4 +159,28 @@ public class AddressHelper extends HelperBase {
         }
         return result;
     }
+
+    public String getEmails(AddressData contact) {
+        return manager.driver.findElement(By.xpath(
+                String.format("//input[@id='%s']/../../td[5]",contact.id()))).getText();
+    }
+
+    public Map<String, String> emailsFromEditForm(AddressData contact) {
+        selectAddress(contact);
+        var result = new HashMap<String, String>();
+        result.put("email", manager.driver.findElement(By.name("email")).getAttribute("value"));
+        result.put("email2", manager.driver.findElement(By.name("email2")).getAttribute("value"));
+        result.put("email3", manager.driver.findElement(By.name("email3")).getAttribute("value"));
+        return result;
+    }
+
+    public String getAddress(AddressData contact) {
+        return manager.driver.findElement(By.xpath(
+                String.format("//input[@id='%s']/../../td[4]",contact.id()))).getText();
+    }
+
+    public String addressFromEditForm(AddressData contact) {
+        selectAddress(contact);
+        return manager.driver.findElement(By.name("address")).getText();
+    }
 }

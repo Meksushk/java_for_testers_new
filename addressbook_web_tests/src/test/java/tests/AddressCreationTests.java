@@ -62,7 +62,7 @@ public class AddressCreationTests extends TestBase {
     }
 
     public static List<AddressData> negativeAddressProvider() {
-        var result = new ArrayList<AddressData>((List.of(new AddressData("", "user'","","", "", "", ""))));
+        var result = new ArrayList<AddressData>((List.of(new AddressData("", "user'","","", "", "", "", "", "","",""))));
         return result;
     }
 

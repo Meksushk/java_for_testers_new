@@ -13,7 +13,7 @@ public class AddressRemovalTests extends TestBase {
     @Test
     public void canRemoveAdd() {
         if (app.hbm().getAddressCount() == 0){
-            app.hbm().createAddress(new AddressData("", "user1", "user1", "123", "", "", ""));
+            app.hbm().createAddress(new AddressData("", "user1", "user1", "123", "", "", "","","","",""));
         }
         var oldAddresses = app.hbm().getAddressList();
         var rnd = new Random();
