@@ -18,4 +18,21 @@ public class SessionHelper extends HelperBase{
     public boolean isLoggedIn() {
         return isElementPresent(By.cssSelector("span.user-info"));
     }
+
+    public void signup(String username, String email) {
+        var signupLink = manager.driver().findElement(By.linkText("Signup for a new account"));
+        signupLink.click();
+        type(By.name("username"), username);
+        type(By.name("email"), email);
+        click(By.xpath("//input[@value=\'Signup\']"));
+    }
+
+    public void verified(String url, String password, String confirmPassword) {
+        manager.driver().get(url);
+        type(By.name("password"), password);
+        type(By.name("password_confirm"), password);
+        var submit = manager.driver().findElement(By.cssSelector("button.btn-success"));
+        submit.click();
+    }
 }
+

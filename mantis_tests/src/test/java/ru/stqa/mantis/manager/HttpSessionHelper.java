@@ -1,9 +1,11 @@
 package ru.stqa.mantis.manager;
 
 import okhttp3.*;
+import ru.stqa.mantis.model.MailMessage;
 
 import java.io.IOException;
 import java.net.CookieManager;
+import java.util.List;
 
 public class HttpSessionHelper extends HelperBase {
 
