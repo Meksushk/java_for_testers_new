@@ -12,7 +12,7 @@ public class UserRegistrationTests extends TestBase {
     @Test
     void canRegisterUser() {
         var email = String.format("%s@localhost", CommonFunctions.randomString(8));
-        app.jamesCli().addUser(email, "password");
+        app.jamesApi().addUser(email, "password");
         var username = String.format(CommonFunctions.randomString(8));
         app.session().signup(username, email);
         app.mail().getInbox(email, "password");
