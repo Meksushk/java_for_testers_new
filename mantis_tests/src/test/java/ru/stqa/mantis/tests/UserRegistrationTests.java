@@ -18,18 +18,19 @@ public class UserRegistrationTests extends TestBase {
         user = app.developerMail().addUser();
         var email = String.format("%s@developermail.com", user.name());
 
-//        app.session().signup(user, email);
-//        app.mail().getInbox(email, "password");
-//        var messages = app.mail().receive(email, "password", Duration.ofSeconds(1000));
-//        var text = messages.get(0).content();
-//        var pattern = Pattern.compile("http://\\S*");
-//        var matcher = pattern.matcher(text);
-//        if (matcher.find()) {
-//            var url = text.substring(matcher.start(), matcher.end());
-//            app.session().verified(url,"root", "root");
-//        }
-//        app.http().login(user, "root");
-//        Assertions.assertTrue(app.http().isLoggedIn());
+        app.session().signup(user.name(), email);
+        app.mail().getInbox(email, "password");
+
+        var message = app.developerMail().receive(user, Duration.ofSeconds(1000));
+        var text = message;
+        var pattern = Pattern.compile("http://\\S*");
+        var matcher = pattern.matcher(text);
+        if (matcher.find()) {
+            var url = text.substring(matcher.start(), matcher.end());
+            app.session().verified(url,"root", "root");
+        }
+        app.http().login(user.name(), "root");
+        Assertions.assertTrue(app.http().isLoggedIn());
     }
 
     @AfterEach
